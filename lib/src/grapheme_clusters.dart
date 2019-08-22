@@ -291,7 +291,7 @@ class _GraphemeClusters extends Iterable<String> implements GraphemeClusters {
     }
     if (pattern.string.isEmpty) {
       if (string.isEmpty) return replacement;
-      return _explodeReplace(replacement.string, startIndex);
+      return GraphemeClusters(_explodeReplace(replacement.string, startIndex));
     }
     int start = startIndex;
     StringBuffer buffer;
@@ -309,7 +309,7 @@ class _GraphemeClusters extends Iterable<String> implements GraphemeClusters {
 
   // Replaces every grapheme cluster boundary with [replacement].
   // Starts at startIndex.
-  GraphemeClusters _explodeReplace(String replacement, int startIndex) {
+  String _explodeReplace(String replacement, int startIndex) {
     var buffer = StringBuffer(string.substring(0, startIndex));
     var breaks = Breaks(string, startIndex, string.length, stateSoTNoBreak);
     int index = 0;
@@ -318,7 +318,7 @@ class _GraphemeClusters extends Iterable<String> implements GraphemeClusters {
       startIndex = index;
     }
     buffer.write(replacement);
-    return GraphemeClusters(buffer.toString());
+    return buffer.toString();
   }
 
   GraphemeClusters replaceFirst(
@@ -336,40 +336,6 @@ class _GraphemeClusters extends Iterable<String> implements GraphemeClusters {
 
   bool containsAll(GraphemeClusters other) {
     return _indexOf(other, 0) >= 0;
-  }
-}
-
-class _EmptyGraphemeClusters extends Iterable<String> implements GraphemeClusters {
-  const _EmptyGraphemeClusters();
-  String get string => "";
-  int get length => 0;
-
-  bool containsAll(GraphemeClusters other) => other.isEmpty;
-
-  bool endsWith(GraphemeClusters other, [int endIndex]) {
-    if (other != null) RangeError.checkValueInInterval(endIndex, 0, 0, "endIndex");
-    return other.isEmpty;
-  }
-
-  int indexOf(GraphemeClusters other, [int startIndex = 0]) {
-    RangeError.checkValueInInterval(startIndex, 0, 0, "startIndex");
-    return other.isEmpty ? startIndex : -1;
-  }
-
-  GraphemeCluster get iterator => _GraphemeCluster("");
-
-  GraphemeClusters replaceAll(GraphemeClusters source, GraphemeClusters replacement, [int startIndex = 0]) {
-    return this;
-  }
-
-  GraphemeClusters replaceFirst(GraphemeClusters source, GraphemeClusters replacement, [int startIndex = 0]) {
-    return this;
-  }
-
-  @override
-  bool startsWith(GraphemeClusters other, [int startIndex = 0]) {
-    RangeError.checkValueInInterval(startIndex, 0, 0, "startIndex");
-    return other.isEmpty;
   }
 }
 
