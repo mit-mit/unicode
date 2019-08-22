@@ -55,7 +55,7 @@ const int stateRegionalEven = 0xC0; // There is an even number of RIs before.
 const int stateRegionalOdd =
     stateZWJPictographic; // There is an odd (non-zero!) number of RIs before.
 
-/// Minimum state requesteing a look-ahead.
+/// Minimum state requesting a look-ahead.
 const int stateLookaheadMin = stateRegionalLookahead;
 
 /// State requesting a look-ahead for an even or odd number of RIs.
